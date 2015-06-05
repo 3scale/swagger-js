@@ -315,10 +315,21 @@ describe('swagger request functions', function () {
 
   it('calls the error handler with missing params per #375', function(done) {
     var petApi = sample.pet;
-    var req = petApi.getPetById({}, function(data){
-      console.log('shoulda failed!');
-    }, function(error) {
+    petApi.getPetById({}, function(data){
+      console.log('shoulda failed!' + data);
+    }, function() {
       done();
     });
+  });
+
+  it('escapes a param per #280', function () {
+    var petApi = sample.pet;
+    var req = petApi.getPetById({petId: 'foo/bar'}, {mock: true});
+
+    test.object(req);
+
+    expect(req.method).toBe('GET');
+    expect(req.headers.Accept).toBe('application/json');
+    expect(req.url).toBe('http://localhost:8000/v2/api/pet/foo%2Fbar');
   });
 });
