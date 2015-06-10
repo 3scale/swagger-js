@@ -13,8 +13,10 @@ var pkg = require('./package');
 var source = require('vinyl-source-stream');
 // Browser Unit Tests
 var karma = require('karma').server;
-var karma_config = require('./karma.conf');
+var karmaConfig = require('./karma.conf');
 var assign = require('object.assign');
+var connect = require('gulp-connect');
+var cors = require('connect-cors');
 
 var banner = ['/**',
   ' * <%= pkg.name %> - <%= pkg.description %>',
@@ -26,8 +28,7 @@ var banner = ['/**',
 var basename = 'swagger-client';
 var paths = {
   sources: ['index.js', 'lib/**/*.js'],
-  tests: ['test/*.js', 'test/compat/*.js', '!test/browser/*.js'],
-  browserTests: ['test/browser/*.js'],
+  tests: ['test/*.js', 'test/compat/*.js', 'test/both/*.js'],
   dist: 'browser'
 };
 
@@ -76,10 +77,6 @@ gulp.task('build', function (cb) {
       standalone: 'SwaggerClient'
     });
 
-    // if (!useDebug) {
-    //   b.transform({global: true}, 'uglifyify');
-    // }
-
     b.transform('brfs')
       .bundle()
       .pipe(source(basename + (!useDebug ? '.min' : '') + '.js'))
@@ -101,7 +98,8 @@ gulp.task('test', function () {
   process.env.NODE_ENV = 'test';
   return gulp
     .src(paths.tests)
-    .pipe(mocha({reporter: 'spec'}));
+    .pipe(mocha({reporter: 'spec'}))
+    .on('error', console.log);
 });
 
 gulp.task('watch', ['test'], function () {
@@ -109,11 +107,22 @@ gulp.task('watch', ['test'], function () {
 });
 
 gulp.task('browsertest', function(done) {
-  karma.start(karma_config, done);
+  karma.start(karmaConfig, done);
+});
+
+gulp.task('connect', function () {
+  connect.server({
+    livereload: false,
+    root: __dirname + '/test/spec/v2',
+    port: 8000,
+    middleware: function (a,b) {
+      return [ cors(a,b) ];
+    }
+  });
 });
 
 gulp.task('watch-browsertest', function(done){
-  var opts = assign({}, karma_config, {singleRun: false});
+  var opts = assign({}, karmaConfig, {singleRun: false});
   karma.start(opts, done);
 });
 

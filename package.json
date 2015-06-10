@@ -8,11 +8,11 @@
     }
   ],
   "description": "swagger-client is a javascript client for use with swaggering APIs.",
-  "version": "2.1.6-M2",
+  "version": "2.1.1",
   "homepage": "http://swagger.io",
   "repository": {
     "type": "git",
-    "url": "git://github.com/swagger-api/swagger-client.git"
+    "url": "https://github.com/swagger-api/swagger-js.git"
   },
   "main": "index.js",
   "scripts": {
@@ -43,10 +43,13 @@
     "brfs": "^1.4.0",
     "browserify": "^9.0.3",
     "chai": "^2.3.0",
+    "connect-cors": "^0.5.6",
     "del": "^1.1.1",
     "expect": "1.4.0",
+    "faux-jax": "^4.0.0",
     "gulp": "^3.8.10",
     "gulp-buffer": "0.0.2",
+    "gulp-connect": "^2.2.0",
     "gulp-header": "^1.2.2",
     "gulp-istanbul": "^0.5.0",
     "gulp-jshint": "^1.9.0",
@@ -59,7 +62,6 @@
     "karma-mocha": "^0.1.10",
     "karma-source-map-support": "^1.0.0",
     "mocha": "^1.21.3",
-    "nock": "^2.0.1",
     "object.assign": "^3.0.0",
     "selenium-webdriver": "^2.45.1",
     "uglifyify": "^3.0.1",

@@ -20,7 +20,7 @@ describe('swagger resolver', function () {
     instance.close();
     done();
   });
-/*
+
   it('is OK without remote references', function (done) {
     var api = new Resolver();
     var spec = {};
@@ -312,7 +312,7 @@ describe('swagger resolver', function () {
     api.resolve(spec, 'http://localhost:8000/v2/petstore.json', function (spec, unresolved) {
       expect(unresolved['http://localhost:8000/v2/petstore.json#/parameters/sharedSkipz']).toEqual({
         root: 'http://localhost:8000/v2/petstore.json',
-        location: '/parameters/sharedSkipz' 
+        location: '/parameters/sharedSkipz'
       });
       done();
     });
@@ -641,7 +641,7 @@ describe('swagger resolver', function () {
       done();
     });
   });
-*/
+
   it('resolves multiple path refs', function(done) {
     var api = new Resolver();
     var spec = {
@@ -671,16 +671,16 @@ describe('swagger resolver', function () {
             ],
             responses: {
               200: {
-                description: "Users in the system",
+                description: 'Users in the system',
                 schema: {
-                  type: "array",
+                  type: 'array',
                   items: {
-                    $ref: "http://localhost:8000/v2/models.json#/Health"
+                    $ref: 'http://localhost:8000/v2/models.json#/Health'
                   }
                 }
               },
               404: {
-                $ref: "http://localhost:8000/v2/responses.json#/NotFoundError"
+                $ref: 'http://localhost:8000/v2/responses.json#/NotFoundError'
               }
             }
           }
@@ -690,7 +690,6 @@ describe('swagger resolver', function () {
 
     // should look in http://localhost:8000/foo/bar/swagger.yaml#/paths/health
     api.resolve(spec, 'http://localhost:8000/swagger.json', function (spec, unresolved) {
-      console.log(JSON.stringify(spec, null, 2));
       expect(spec.paths['/users'].get.parameters.length).toBe(2);
       expect(Object.keys(unresolved).length).toBe(0);
       test.object(spec.paths['/health'].get);
